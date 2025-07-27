@@ -1,0 +1,19 @@
+{
+  "tags": [
+    {
+      "id": "web001",
+      "name": "Web",
+      "post_count": 0
+    },
+    {
+      "id": "dev001",
+      "name": "Desarrollo",
+      "post_count": 0
+    },
+    {
+      "id": "mar001",
+      "name": "Marketing",
+      "post_count": 0
+    }
+  ]
+}

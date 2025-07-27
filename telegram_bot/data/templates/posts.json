@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "id": "8a2df4c2-1e56-4f27-9df8-b3c4822b7e61",
+      "title": "¿Por qué los niños tienen más calor que nosotros?",
+      "description": "Los niños tienen más calor por su termorregulación inmadura, alta relación superficie/volumen y metabolismo acelerado, aumentando riesgo de deshidratación.",
+      "url": "/desarrollo/por-que-los-ninos-tienen-mas-calor-que-nosotros.html",
+      "image": "https://images.unsplash.com/photo-1487023367748-e87a834fce70?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "date": "2025-01-27",
+      "category": "Desarrollo",
+      "slug": "por-que-los-ninos-tienen-mas-calor-que-nosotros"
+    },
+    {
+      "id": "4c7a5f87-9c5a-4a1c-8e97-3c85f4162a12",
+      "title": "¿Afecta el cambio de hora a los niños?",
+      "description": "El cambio de hora puede afectar significativamente a niños y bebés, alterando sus patrones de sueño y comportamiento según la Asociación Española de Pediatría.",
+      "url": "/desarrollo/afecta-el-cambio-de-hora-a-los-ninos.html",
+      "image": "https://www.example.com/images/cambio-hora.jpg",
+      "date": "2025-01-20",
+      "category": "Desarrollo",
+      "slug": "afecta-el-cambio-de-hora-a-los-ninos"
+    },
+    {
+      "id": "d2a3f79b-4df7-4ea8-9c3b-83e0e4b2785f",
+      "title": "Un estudio ratifica la verdadera dieta saludable",
+      "description": "Un estudio global ha identificado seis alimentos clave cuyo consumo regular está asociado con un menor riesgo de enfermedades cardiovasculares y mortalidad.",
+      "url": "/alimentacion/un-estudio-ratifica-la-verdadera-dieta-saludable.html",
+      "image": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=3506&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "date": "2025-01-19",
+      "category": "Alimentación",
+      "slug": "un-estudio-ratifica-la-verdadera-dieta-saludable"
+    }
+  ]
+} 

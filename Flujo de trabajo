@@ -1,0 +1,214 @@
+Estructura del Proyecto Bot de Telegram para Gestión de Contenido Web
+=====================================================================
+
+REPOSITORIO
+-----------
+https://github.com/idtla/knowmadwriter.git
+
+ESTRUCTURA GENERAL
+-----------------
+```
+telegram_bot/                     # Directorio raíz del proyecto
+├── app.py                        # Punto de entrada principal del bot
+├── requirements.txt              # Dependencias del proyecto
+├── README.md                     # Documentación principal
+├── .env.example                  # Plantilla para variables de entorno
+├── config/                       # Configuraciones
+├── core/                         # Lógica central del bot
+├── database/                     # Configuración de la base de datos
+├── models/                       # Modelos de datos
+├── modules/                      # Módulos funcionales
+│   ├── admin/                    # Módulo para administradores
+│   ├── auth/                     # Autenticación y registro de usuarios
+│   ├── categories/               # Gestión de categorías
+│   ├── content/                  # Creación y gestión de contenido
+│   ├── tags/                     # Gestión de etiquetas
+│   └── sftp/                     # Operaciones SFTP/SSH
+├── utils/                        # Utilidades
+│   ├── encryption.py             # Cifrado de credenciales
+│   ├── html_processor.py         # Procesamiento de HTML y placeholders
+└── tests/                        # Pruebas unitarias
+```
+
+MODELOS DE DATOS
+----------------
+1. **User** (models/user.py)
+   - Gestión de usuarios del bot
+   - Campos: telegram_id, name, email, status, role
+   - Estados: pre_registered, active, inactive
+   - Roles: user, admin
+
+2. **Site** (models/site.py)
+   - Configuración de sitios web por usuario
+   - Campos: user_id, name, domain, sftp_config, template
+   - Estados: pending, configured, active, inactive
+
+3. **Content** (models/content.py)
+   - Gestión de posts/contenido
+   - Campos: site_id, title, html_content, slug, feature_image, category
+   - Estados: draft, published
+   - Gestión de imágenes integrada
+
+ESTRUCTURA DE DATOS JSON POR CLIENTE
+-----------------------------------
+Cada cliente (usuario) tiene tres archivos JSON principales que almacenan toda la información relevante:
+
+1. **posts.json**
+   - Mini listado con información de cada post
+   - Utilizado para generar páginas de índice y listados
+   - Contiene: id, título, slug, descripción, categoría, etiquetas, fecha
+   - Ejemplo:
+   ```json
+   {
+     "posts": [
+       {
+         "id": "post123",
+         "title": "Título del post",
+         "slug": "titulo-del-post",
+         "description": "Breve descripción",
+         "category": "Tecnología",
+         "tags": ["web", "desarrollo"],
+         "date": "2023-03-10"
+       },
+       // más posts...
+     ]
+   }
+   ```
+
+2. **categories.json**
+   - Información de categorías con contadores automáticos
+   - Utilizado para menús y estadísticas
+   - Contiene: nombre, color, contador de posts
+   - Ejemplo:
+   ```json
+   {
+     "categories": [
+       {
+         "name": "Tecnología",
+         "color": "#28A745",
+         "post_count": 12
+       },
+       // más categorías...
+     ]
+   }
+   ```
+
+3. **tags.json**
+   - Información de etiquetas con contadores automáticos
+   - Utilizado para visualizar nubes de tags y estadísticas
+   - Contiene: nombre, contador de posts
+   - Ejemplo:
+   ```json
+   {
+     "tags": [
+       {
+         "name": "desarrollo",
+         "post_count": 8
+       },
+       // más etiquetas...
+     ]
+   }
+   ```
+
+BASE DE DATOS
+-------------
+- SQLite como sistema de almacenamiento ligero
+- Tablas principales:
+  - users: Información básica de usuarios (telegram_id, nombre, email, estado, rol)
+  - sites: Configuración mínima de sitios (user_id, domain)
+  - logs: Registro de acciones y uso
+
+PLACEHOLDERS SOPORTADOS
+----------------------
+```
+{{TITLE}}               # Título del post (Obligatorio)
+{{SITE_NAME}}           # Nombre del sitio (Obligatorio)
+{{META_DESCRIPTION}}    # Meta descripción (Obligatorio)
+{{FEATURE_IMAGE}}       # Imagen principal (Obligatorio)
+{{PUBLISHED_TIME}}      # Fecha de publicación (Obligatorio)
+{{CATEGORY}}            # Categoría (Obligatorio)
+{{SITE_URL}}            # Dominio del sitio (Obligatorio)
+{{ARTICLE_URL}}         # URL completa (Obligatorio)
+{{CONTENT}}             # Contenido HTML (Obligatorio)
+{{SLUG}}                # URL amigable (Obligatorio)
+{{LAST_MODIFIED}}       # Última modificación (Opcional)
+{{FEATURE_IMAGE_ALT}}   # Alt de imagen (Opcional)
+{{READING_TIME}}        # Tiempo de lectura (Opcional)
+{{SOURCE_LIST}}         # Lista de fuentes (Opcional)
+{{POST_MONTH}}          # Mes de publicación (Opcional)
+```
+
+FLUJOS PRINCIPALES
+-----------------
+1. **Registro y Autenticación**
+   - Pre-registro por administrador
+   - Registro completo por usuario (código alfanumérico de 8 caracteres)
+   - Verificación de acceso en cada acción
+
+2. **Navegación Mejorada**
+   - Menú principal con botones interactivos
+   - Comandos persistentes en la parte inferior
+   - Estructura de navegación intuitiva con botón "Volver"
+   - Feedback claro sobre el estado de las acciones
+
+3. **Configuración del Sitio**
+   - Datos básicos (nombre, dominio)
+   - Credenciales SFTP/SSH con prueba de conexión
+   - Explorador de directorios para selección visual de rutas
+   - Plantilla HTML con validación de placeholders
+
+4. **Creación de Contenido**
+   - Entrada y validación de HTML
+   - Solicitud de información faltante
+   - Subida y procesamiento de imágenes
+   - Generación del post final
+   - Actualización automática de contadores en categorías y etiquetas
+
+5. **Publicación**
+   - Sustitución de placeholders
+   - Subida vía SFTP
+   - Actualización de los tres archivos JSON
+   - Confirmación al usuario
+
+6. **Gestión de Categorías y Etiquetas**
+   - Creación, edición y eliminación
+   - Visualización de estadísticas (posts por categoría/etiqueta)
+   - Actualización automática de contadores
+
+SEGURIDAD
+---------
+- Cifrado de credenciales SFTP con Fernet
+- Control de acceso basado en estados de usuario
+- Validación de HTML para prevenir XSS
+- Almacenamiento seguro de claves en variables de entorno
+
+EVOLUCIÓN DEL PROYECTO
+---------------------
+1. **v1.0 - Versión inicial con MongoDB**
+   - Implementación base del bot con base de datos MongoDB
+   - Estructura básica de comandos
+   - Funcionalidades de gestión de contenido
+
+2. **v2.0 - Migración a SQLite**
+   - Cambio de MongoDB a SQLite por compatibilidad
+   - Actualización de modelos de datos
+   - Ajustes en la gestión de usuarios
+
+3. **v3.0 - Actualización de Compatibilidad**
+   - Adaptación a la nueva API de python-telegram-bot
+   - Creación del módulo de compatibilidad
+   - Corrección de errores en filtros y manejadores
+
+4. **v4.0 - Mejora de Interfaz (ACTUAL)**
+   - Implementación de menú principal con botones
+   - Integración de comandos persistentes
+   - Mejora en el flujo de registro
+   - Explorador de directorios SFTP
+   - Prueba de conexión SFTP
+   - Eliminación de la funcionalidad de destacados
+
+EXTENSIONES FUTURAS
+------------------
+- Sistema de respaldo automático
+- Gestión de varias plantillas por sitio
+- Editor visual integrado 

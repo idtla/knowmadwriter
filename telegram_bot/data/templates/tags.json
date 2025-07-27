@@ -1,0 +1,40 @@
+{
+  "tags": [
+    {
+      "id": "ninos",
+      "name": "Niños",
+      "count": 2,
+      "slug": "ninos"
+    },
+    {
+      "id": "temperatura",
+      "name": "Temperatura",
+      "count": 1,
+      "slug": "temperatura"
+    },
+    {
+      "id": "salud",
+      "name": "Salud",
+      "count": 1,
+      "slug": "salud"
+    },
+    {
+      "id": "sueno",
+      "name": "Sueño",
+      "count": 1,
+      "slug": "sueno"
+    },
+    {
+      "id": "alimentacion",
+      "name": "Alimentación",
+      "count": 1,
+      "slug": "alimentacion"
+    },
+    {
+      "id": "desarrollo",
+      "name": "Desarrollo",
+      "count": 2,
+      "slug": "desarrollo"
+    }
+  ]
+} 

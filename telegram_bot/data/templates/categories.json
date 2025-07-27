@@ -1,0 +1,52 @@
+{
+  "categories": [
+    {
+      "id": "desarrollo",
+      "name": "Desarrollo",
+      "description": "Artículos sobre el desarrollo infantil y adolescente",
+      "count": 2,
+      "image": "/images/categories/desarrollo.jpg",
+      "slug": "desarrollo"
+    },
+    {
+      "id": "salud",
+      "name": "Salud",
+      "description": "Artículos sobre salud infantil y familiar",
+      "count": 0,
+      "image": "/images/categories/salud.jpg",
+      "slug": "salud"
+    },
+    {
+      "id": "alimentacion",
+      "name": "Alimentación",
+      "description": "Artículos sobre alimentación saludable para toda la familia",
+      "count": 1,
+      "image": "/images/categories/alimentacion.jpg",
+      "slug": "alimentacion"
+    },
+    {
+      "id": "crianza",
+      "name": "Crianza",
+      "description": "Consejos y reflexiones sobre estilos de crianza",
+      "count": 0,
+      "image": "/images/categories/crianza.jpg",
+      "slug": "crianza"
+    },
+    {
+      "id": "embarazo",
+      "name": "Embarazo",
+      "description": "Todo sobre el embarazo y la preparación al parto",
+      "count": 0,
+      "image": "/images/categories/embarazo.jpg",
+      "slug": "embarazo"
+    },
+    {
+      "id": "pareja",
+      "name": "Pareja",
+      "description": "Relación de pareja en el contexto familiar",
+      "count": 0,
+      "image": "/images/categories/pareja.jpg",
+      "slug": "pareja"
+    }
+  ]
+} 

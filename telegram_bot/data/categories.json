@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "name": "General",
+      "color": "#007BFF"
+    },
+    {
+      "name": "Tecnología",
+      "color": "#28A745"
+    },
+    {
+      "name": "Negocios",
+      "color": "#DC3545"
+    }
+  ]
+}

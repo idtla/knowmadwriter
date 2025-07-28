@@ -17,6 +17,7 @@ import models.user
 # Importar desde nuestro módulo de compatibilidad
 from utils.compat import Filters, CallbackContext
 
+from utils.breadcrumbs import breadcrumb
 # Configuración de logging
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,7 @@ POSTS_TEMPLATE = os.path.join(TEMPLATES_DIR, 'posts.json')
 CATEGORIES_TEMPLATE = os.path.join(TEMPLATES_DIR, 'categories.json')
 TAGS_TEMPLATE = os.path.join(TEMPLATES_DIR, 'tags.json')
 
+@breadcrumb
 async def newpost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /newpost."""
     user = update.effective_user
@@ -54,6 +56,7 @@ async def newpost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Guardamos el paso actual en el estado
     state_manager.set_data(user.id, "content_step", "waiting_title")
 
+@breadcrumb
 async def process_title(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el título enviado por el usuario."""
     user = update.effective_user
@@ -101,6 +104,7 @@ async def process_title(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual
     state_manager.set_data(user.id, "content_step", "waiting_description")
 
+@breadcrumb
 async def process_description(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa la descripción enviada por el usuario."""
     user = update.effective_user
@@ -140,6 +144,7 @@ async def process_description(update: Update, context: ContextTypes.DEFAULT_TYPE
     # Actualizar el paso actual
     state_manager.set_data(user.id, "content_step", "waiting_url_or_content")
 
+@breadcrumb
 async def process_url_or_content(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa la URL o la indicación de contenido enviada por el usuario."""
     user = update.effective_user
@@ -183,6 +188,7 @@ async def process_url_or_content(update: Update, context: ContextTypes.DEFAULT_T
             parse_mode=ParseMode.HTML
         )
 
+@breadcrumb
 async def process_content(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el contenido HTML enviado por el usuario."""
     user = update.effective_user
@@ -227,6 +233,7 @@ async def process_content(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="✅ Contenido recibido. Continúa escribiendo o envía /fin cuando hayas terminado."
         )
 
+@breadcrumb
 async def request_category(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Solicita al usuario que seleccione una categoría."""
     user = update.effective_user
@@ -271,6 +278,7 @@ async def request_category(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual
     state_manager.set_data(user.id, "content_step", "waiting_category")
 
+@breadcrumb
 async def process_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa la imagen enviada por el usuario."""
     user = update.effective_user
@@ -313,6 +321,7 @@ async def process_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         )
 
+@breadcrumb
 async def show_post_summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Muestra un resumen del post y solicita confirmación."""
     user = update.effective_user
@@ -354,6 +363,7 @@ async def show_post_summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual
     state_manager.set_data(user.id, "content_step", "waiting_confirmation")
 
+@breadcrumb
 async def content_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Gestiona los callbacks relacionados con la creación de contenido."""
     query = update.callback_query
@@ -604,6 +614,7 @@ async def content_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             state_manager.set_state(user.id, State.IDLE)
             state_manager.clear_user_data(user.id)
 
+@breadcrumb
 async def process_edit_field(update: Update, context: ContextTypes.DEFAULT_TYPE, field: str):
     """Procesa el nuevo valor para el campo que se está editando."""
     user = update.effective_user
@@ -670,6 +681,7 @@ async def process_edit_field(update: Update, context: ContextTypes.DEFAULT_TYPE,
         await request_category(update, context)
         return
 
+@breadcrumb
 async def content_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador de mensajes para el módulo de contenido."""
     user = update.effective_user
@@ -705,6 +717,7 @@ async def content_message_handler(update: Update, context: ContextTypes.DEFAULT_
     # Si no está en proceso de creación o edición, dejamos que otros manejadores procesen el mensaje
     return False
 
+@breadcrumb
 async def editpost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /editpost."""
     user = update.effective_user
@@ -778,6 +791,7 @@ async def editpost_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def load_post_for_editing(update: Update, context: ContextTypes.DEFAULT_TYPE, post_id: str):
     """Carga un post para su edición."""
     user = update.effective_user
@@ -851,6 +865,7 @@ async def load_post_for_editing(update: Update, context: ContextTypes.DEFAULT_TY
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def request_edit_field(update: Update, context: ContextTypes.DEFAULT_TYPE, field: str):
     """Solicita al usuario que edite un campo específico del post."""
     user = update.effective_user

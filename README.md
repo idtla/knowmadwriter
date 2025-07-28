@@ -298,3 +298,17 @@ Esta sección describe los principales manejadores (handlers) del bot y su funci
 ## 📜 Licencia
 
 Este proyecto está licenciado bajo los términos de la licencia MIT.
+
+## 🧪 Ejecutar pruebas
+
+1. Instala dependencias en un entorno virtual:
+   ```bash
+   pip install -r telegram_bot/requirements.txt
+   pip install pytest pytest-asyncio pytest-cov
+   ```
+2. Ejecuta todas las pruebas y genera el reporte de cobertura:
+   ```bash
+   pytest --cov=telegram_bot --cov-report=term-missing
+   ```
+
+El proyecto cuenta con un workflow de GitHub Actions que ejecuta estas pruebas en cada push.

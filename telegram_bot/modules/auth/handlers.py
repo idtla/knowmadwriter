@@ -11,6 +11,7 @@ from telegram.constants import ParseMode
 # Importar desde nuestro módulo de compatibilidad
 from utils.compat import Filters, CallbackContext
 
+from utils.breadcrumbs import breadcrumb
 # Configuración de logging
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,7 @@ logger = logging.getLogger(__name__)
 from models.user import User
 from core.states import State, state_manager
 
+@breadcrumb
 async def register_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /register."""
     user = update.effective_user
@@ -65,6 +67,7 @@ async def register_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Guardamos el paso actual en el estado
     state_manager.set_data(user.id, "register_step", "waiting_auth_code")
 
+@breadcrumb
 async def process_auth_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el código de autorización enviado por el usuario."""
     user = update.effective_user
@@ -102,6 +105,7 @@ async def process_auth_code(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
         )
 
+@breadcrumb
 async def process_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el nombre enviado por el usuario."""
     user = update.effective_user
@@ -145,6 +149,7 @@ async def process_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual en el estado
     state_manager.set_data(user.id, "register_step", "waiting_email")
 
+@breadcrumb
 async def process_email(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el email enviado por el usuario."""
     user = update.effective_user
@@ -206,6 +211,7 @@ async def process_email(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual en el estado
     state_manager.set_data(user.id, "register_step", "waiting_confirmation")
 
+@breadcrumb
 async def register_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa los callbacks del proceso de registro."""
     query = update.callback_query
@@ -306,6 +312,7 @@ async def register_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text="❓ Acción no reconocida. Por favor, intenta nuevamente."
         )
 
+@breadcrumb
 async def auth_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador global para mensajes relacionados con autenticación."""
     user = update.effective_user

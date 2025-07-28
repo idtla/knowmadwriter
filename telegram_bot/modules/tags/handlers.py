@@ -15,6 +15,7 @@ from telegram.ext import CallbackContext, ConversationHandler, CommandHandler, C
 # Importar desde nuestro módulo de compatibilidad
 from utils.compat import Filters
 from utils.file_operations import read_json_file, write_json_file
+from utils.breadcrumbs import breadcrumb
 from models.tag import Tag
 
 # Estados para la conversación
@@ -52,6 +53,7 @@ def save_tags(tags_data):
     write_json_file(TAGS_FILE, tags_data)
 
 # Handlers
+@breadcrumb
 async def start_tags(update: Update, context: CallbackContext) -> int:
     """Inicia el flujo de gestión de etiquetas."""
     keyboard = [
@@ -78,6 +80,7 @@ async def start_tags(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def view_tags(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de etiquetas existentes."""
     tags_data = load_tags()
@@ -110,6 +113,7 @@ async def view_tags(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def new_tag(update: Update, context: CallbackContext) -> int:
     """Inicia el proceso de creación de una nueva etiqueta."""
     await update.callback_query.answer()
@@ -120,6 +124,7 @@ async def new_tag(update: Update, context: CallbackContext) -> int:
     )
     return ENTER_TAG_NAME
 
+@breadcrumb
 async def enter_tag_name(update: Update, context: CallbackContext) -> int:
     """Recibe el nombre de la etiqueta y la crea."""
     tag_name = update.message.text.strip()
@@ -161,6 +166,7 @@ async def enter_tag_name(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def select_tag_to_edit(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de etiquetas para seleccionar una a editar."""
     tags_data = load_tags()
@@ -198,6 +204,7 @@ async def select_tag_to_edit(update: Update, context: CallbackContext) -> int:
     )
     return SELECT_TAG
 
+@breadcrumb
 async def edit_tag(update: Update, context: CallbackContext) -> int:
     """Muestra opciones para editar una etiqueta específica."""
     tag_name = update.callback_query.data.split("_")[1]
@@ -222,6 +229,7 @@ async def edit_tag(update: Update, context: CallbackContext) -> int:
     
     return ENTER_TAG_NAME
 
+@breadcrumb
 async def update_tag_name(update: Update, context: CallbackContext) -> int:
     """Actualiza el nombre de la etiqueta."""
     old_tag_name = context.user_data.get("edit_tag")
@@ -286,6 +294,7 @@ async def update_tag_name(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def select_tag_to_delete(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de etiquetas para seleccionar una a eliminar."""
     tags_data = load_tags()
@@ -324,6 +333,7 @@ async def select_tag_to_delete(update: Update, context: CallbackContext) -> int:
     )
     return SELECT_TAG
 
+@breadcrumb
 async def delete_tag(update: Update, context: CallbackContext) -> int:
     """Elimina una etiqueta y la actualiza en los posts."""
     tag_name = update.callback_query.data.split("_")[1]
@@ -371,6 +381,7 @@ async def delete_tag(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def update_tag_counts(update: Update, context: CallbackContext) -> int:
     """Actualiza los contadores de todas las etiquetas basados en los posts."""
     await update.callback_query.answer()
@@ -408,6 +419,7 @@ async def update_tag_counts(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def back_handler(update: Update, context: CallbackContext) -> int:
     """Maneja los botones de regreso."""
     query = update.callback_query

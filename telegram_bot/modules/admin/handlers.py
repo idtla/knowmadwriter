@@ -15,6 +15,7 @@ from core.states import State, state_manager
 from models.user import User
 from database.connection import get_db
 
+from utils.breadcrumbs import breadcrumb
 logger = logging.getLogger(__name__)
 
 # Estados para la conversación de administración
@@ -23,6 +24,7 @@ ADMIN_WAITING_ROLE = 2
 ADMIN_WAITING_STATUS = 3
 ADMIN_WAITING_CONFIRM = 4
 
+@breadcrumb
 async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja el comando /admin."""
     user = update.effective_user
@@ -40,6 +42,7 @@ async def admin_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Mostrar el panel de administración
     await send_admin_panel(update, context)
 
+@breadcrumb
 async def send_admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE, is_new_message=True):
     """Envía el panel de administración."""
     keyboard = [
@@ -71,6 +74,7 @@ async def send_admin_panel(update: Update, context: ContextTypes.DEFAULT_TYPE, i
         chat_id = update.effective_chat.id
         await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=reply_markup, parse_mode=ParseMode.HTML)
 
+@breadcrumb
 async def admin_users_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Muestra el panel de gestión de usuarios."""
     keyboard = [
@@ -95,6 +99,7 @@ async def admin_users_panel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def list_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Lista los usuarios registrados en el sistema."""
     users = User.get_all()
@@ -135,6 +140,7 @@ async def list_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def show_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Muestra estadísticas del sistema."""
     # Contar usuarios
@@ -164,6 +170,7 @@ async def show_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def admin_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja los callbacks específicos de administración."""
     query = update.callback_query

@@ -15,6 +15,7 @@ from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandl
 # Importar desde nuestro módulo de compatibilidad
 from utils.compat import Filters, CallbackContext
 
+from utils.breadcrumbs import breadcrumb
 from utils.file_operations import read_json_file, write_json_file
 
 # Estados para la conversación
@@ -52,6 +53,7 @@ def save_categories(categories_data):
     write_json_file(CATEGORIES_FILE, categories_data)
 
 # Handlers
+@breadcrumb
 async def start_categories(update: Update, context: CallbackContext) -> int:
     """Inicia el flujo de gestión de categorías."""
     keyboard = [
@@ -77,6 +79,7 @@ async def start_categories(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def view_categories(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de categorías existentes."""
     categories_data = load_categories()
@@ -117,6 +120,7 @@ async def view_categories(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def new_category(update: Update, context: CallbackContext) -> int:
     """Inicia el proceso de creación de una nueva categoría."""
     await update.callback_query.answer()
@@ -127,6 +131,7 @@ async def new_category(update: Update, context: CallbackContext) -> int:
     )
     return ENTER_CATEGORY_NAME
 
+@breadcrumb
 async def enter_category_name(update: Update, context: CallbackContext) -> int:
     """Recibe el nombre de la categoría y pide el color."""
     category_name = update.message.text.strip()
@@ -160,6 +165,7 @@ async def enter_category_name(update: Update, context: CallbackContext) -> int:
     )
     return ENTER_CATEGORY_COLOR
 
+@breadcrumb
 async def enter_category_color(update: Update, context: CallbackContext) -> int:
     """Recibe el color de la categoría y la crea."""
     category_color = update.message.text.strip()
@@ -198,6 +204,7 @@ async def enter_category_color(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def select_category_to_edit(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de categorías para seleccionar una a editar."""
     categories_data = load_categories()
@@ -235,6 +242,7 @@ async def select_category_to_edit(update: Update, context: CallbackContext) -> i
     )
     return SELECT_CATEGORY
 
+@breadcrumb
 async def edit_category(update: Update, context: CallbackContext) -> int:
     """Muestra opciones para editar una categoría específica."""
     category_name = update.callback_query.data.split("_")[1]
@@ -270,6 +278,7 @@ async def edit_category(update: Update, context: CallbackContext) -> int:
     )
     return SELECT_CATEGORY
 
+@breadcrumb
 async def change_category_name(update: Update, context: CallbackContext) -> int:
     """Solicita el nuevo nombre para la categoría."""
     category_name = context.user_data.get("edit_category")
@@ -285,6 +294,7 @@ async def change_category_name(update: Update, context: CallbackContext) -> int:
     context.user_data["edit_action"] = "name"
     return ENTER_CATEGORY_NAME
 
+@breadcrumb
 async def change_category_color(update: Update, context: CallbackContext) -> int:
     """Solicita el nuevo color para la categoría."""
     category_name = context.user_data.get("edit_category")
@@ -308,6 +318,7 @@ async def change_category_color(update: Update, context: CallbackContext) -> int
     context.user_data["edit_action"] = "color"
     return ENTER_CATEGORY_COLOR
 
+@breadcrumb
 async def update_category_field(update: Update, context: CallbackContext) -> int:
     """Actualiza el campo de la categoría (nombre o color)."""
     category_name = context.user_data.get("edit_category")
@@ -379,6 +390,7 @@ async def update_category_field(update: Update, context: CallbackContext) -> int
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def select_category_to_delete(update: Update, context: CallbackContext) -> int:
     """Muestra la lista de categorías para seleccionar una a eliminar."""
     categories_data = load_categories()
@@ -417,6 +429,7 @@ async def select_category_to_delete(update: Update, context: CallbackContext) ->
     )
     return SELECT_CATEGORY
 
+@breadcrumb
 async def delete_category(update: Update, context: CallbackContext) -> int:
     """Elimina una categoría y actualiza los posts asociados."""
     category_name = update.callback_query.data.split("_")[1]
@@ -461,6 +474,7 @@ async def delete_category(update: Update, context: CallbackContext) -> int:
     )
     return SELECTING_ACTION
 
+@breadcrumb
 async def back_handler(update: Update, context: CallbackContext) -> int:
     """Maneja los botones de regreso."""
     query = update.callback_query

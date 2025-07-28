@@ -21,8 +21,10 @@ import time
 from utils.compat import Filters, CallbackContext
 
 # Configuración de logging
+from utils.breadcrumbs import breadcrumb
 logger = logging.getLogger(__name__)
 
+@breadcrumb
 async def sftp_config_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /sftp_config."""
     user = update.effective_user
@@ -49,6 +51,7 @@ async def sftp_config_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     # Guardamos el paso actual en el estado
     state_manager.set_data(user.id, "sftp_step", "waiting_host")
 
+@breadcrumb
 async def process_sftp_host(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el host SFTP enviado por el usuario."""
     user = update.effective_user
@@ -122,6 +125,7 @@ async def process_sftp_host(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual
     state_manager.set_data(user.id, "sftp_step", "waiting_port")
 
+@breadcrumb
 async def process_sftp_port(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el puerto SFTP enviado por el usuario."""
     user = update.effective_user
@@ -217,6 +221,7 @@ async def process_sftp_port(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Actualizar el paso actual
     state_manager.set_data(user.id, "sftp_step", "waiting_username")
 
+@breadcrumb
 async def process_sftp_username(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el nombre de usuario SFTP enviado por el usuario."""
     user = update.effective_user
@@ -292,6 +297,7 @@ async def process_sftp_username(update: Update, context: ContextTypes.DEFAULT_TY
     # Actualizar el paso actual
     state_manager.set_data(user.id, "sftp_step", "waiting_password")
 
+@breadcrumb
 async def process_sftp_password(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa la contraseña SFTP enviada por el usuario."""
     user = update.effective_user
@@ -373,6 +379,7 @@ async def process_sftp_password(update: Update, context: ContextTypes.DEFAULT_TY
     # Volver al estado IDLE ya que hemos completado la configuración
     state_manager.set_state(user.id, State.IDLE)
 
+@breadcrumb
 async def process_sftp_remote_dir(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Procesa el directorio remoto SFTP enviado por el usuario."""
     user = update.effective_user
@@ -447,6 +454,7 @@ async def process_sftp_remote_dir(update: Update, context: ContextTypes.DEFAULT_
         
         logger.error(f"Error en la configuración SFTP del usuario {user.id}")
 
+@breadcrumb
 async def upload_file_to_sftp(user_id, local_path, remote_path, content=None):
     """
     Sube un archivo al servidor SFTP.
@@ -525,6 +533,7 @@ async def upload_file_to_sftp(user_id, local_path, remote_path, content=None):
         logger.error(f"Error al subir archivo por SFTP: {e}")
         return False
 
+@breadcrumb
 async def upload_post_to_sftp(update: Update, context: ContextTypes.DEFAULT_TYPE, post_data):
     """Sube un post al servidor SFTP."""
     user = update.effective_user
@@ -661,6 +670,7 @@ async def upload_post_to_sftp(update: Update, context: ContextTypes.DEFAULT_TYPE
         )
         return False
 
+@breadcrumb
 async def sftp_message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador de mensajes para el módulo SFTP."""
     user = update.effective_user
@@ -688,6 +698,7 @@ async def sftp_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     # Si no está en proceso de configuración SFTP, dejamos que otros manejadores procesen el mensaje
     return False
 
+@breadcrumb
 async def sftp_config_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Muestra el menú de configuración SFTP con botones."""
     user = update.effective_user
@@ -826,6 +837,7 @@ async def sftp_config_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode=ParseMode.HTML
         )
 
+@breadcrumb
 async def test_sftp_connection(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Prueba la conexión SFTP con los datos configurados."""
     user = update.effective_user
@@ -976,6 +988,7 @@ async def test_sftp_connection(update: Update, context: ContextTypes.DEFAULT_TYP
             ]])
         )
 
+@breadcrumb
 async def explore_sftp_directories(update: Update, context: ContextTypes.DEFAULT_TYPE, path='.'):
     """Explora los directorios SFTP."""
     user = update.effective_user
@@ -1242,6 +1255,7 @@ async def explore_sftp_directories(update: Update, context: ContextTypes.DEFAULT
             ]])
         )
 
+@breadcrumb
 async def select_sftp_folder(update: Update, context: ContextTypes.DEFAULT_TYPE, folder_type, path):
     """Selecciona una carpeta para posts o imágenes."""
     user = update.effective_user
@@ -1336,6 +1350,7 @@ async def select_sftp_folder(update: Update, context: ContextTypes.DEFAULT_TYPE,
             ])
         )
 
+@breadcrumb
 async def sftp_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja los callbacks relacionados con SFTP."""
     query = update.callback_query
@@ -1495,6 +1510,7 @@ async def sftp_callback_handler(update: Update, context: ContextTypes.DEFAULT_TY
                     ])
                 )
 
+@breadcrumb
 async def handle_incomplete_config(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja el caso cuando el usuario intenta probar la conexión con configuración incompleta."""
     query = update.callback_query
@@ -1565,6 +1581,7 @@ async def handle_incomplete_config(update: Update, context: ContextTypes.DEFAULT
         parse_mode=ParseMode.HTML
             )
 
+@breadcrumb
 async def show_directory_options(update: Update, context: ContextTypes.DEFAULT_TYPE, path):
     """Muestra opciones para el directorio seleccionado."""
     query = update.callback_query
@@ -1597,6 +1614,7 @@ async def show_directory_options(update: Update, context: ContextTypes.DEFAULT_T
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+@breadcrumb
 async def show_more_files(update: Update, context: ContextTypes.DEFAULT_TYPE, path):
     """Muestra todos los archivos en el directorio."""
     user = update.effective_user
@@ -1773,6 +1791,7 @@ async def show_more_files(update: Update, context: ContextTypes.DEFAULT_TYPE, pa
             ])
         )
 
+@breadcrumb
 async def confirm_clear_sftp_config(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Solicita confirmación para eliminar la configuración SFTP."""
     query = update.callback_query
@@ -1795,6 +1814,7 @@ async def confirm_clear_sftp_config(update: Update, context: ContextTypes.DEFAUL
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
+@breadcrumb
 async def clear_sftp_config(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Elimina la configuración SFTP del usuario."""
     query = update.callback_query

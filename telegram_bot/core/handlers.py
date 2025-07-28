@@ -5,12 +5,14 @@ Manejadores principales para los eventos del bot de Telegram.
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
+from utils.breadcrumbs import breadcrumb
 from telegram.constants import ParseMode
 import os
 
 # Configuración de logging
 logger = logging.getLogger(__name__)
 
+@breadcrumb
 async def send_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE, is_new_message=True):
     """Envía el menú principal con botones interactivos"""
     user = update.effective_user
@@ -75,6 +77,7 @@ async def send_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE, is_
             parse_mode=ParseMode.HTML
         )
 
+@breadcrumb
 async def send_settings_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Envía el menú de configuración"""
     keyboard = [
@@ -95,6 +98,7 @@ async def send_settings_menu(update: Update, context: ContextTypes.DEFAULT_TYPE)
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /start."""
     user = update.effective_user
@@ -150,6 +154,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"Para empezar, debes registrarte usando el comando /register."
         )
 
+@breadcrumb
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /help."""
     help_text = (
@@ -171,6 +176,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await update.message.reply_text(help_text, parse_mode=ParseMode.HTML)
 
+@breadcrumb
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para callbacks de botones interactivos."""
     query = update.callback_query
@@ -612,6 +618,7 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode=ParseMode.HTML
         )
 
+@breadcrumb
 async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para mensajes de texto."""
     user = update.effective_user
@@ -678,6 +685,7 @@ async def message_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ])
     )
 
+@breadcrumb
 async def handle_site_configuration(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para procesar la configuración del sitio."""
     user = update.effective_user
@@ -775,6 +783,7 @@ async def handle_site_configuration(update: Update, context: ContextTypes.DEFAUL
         # Mostrar menú principal
         await send_main_menu(update, context)
 
+@breadcrumb
 async def handle_template_upload(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para procesar la subida de plantilla como texto."""
     user = update.effective_user
@@ -907,6 +916,7 @@ async def handle_template_upload(update: Update, context: ContextTypes.DEFAULT_T
         state_manager.set_state(user.id, State.IDLE)
         await send_main_menu(update, context)
 
+@breadcrumb
 async def handle_document_upload(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para procesar la subida de plantilla como documento HTML."""
     user = update.effective_user
@@ -1094,6 +1104,7 @@ async def handle_document_upload(update: Update, context: ContextTypes.DEFAULT_T
             parse_mode=ParseMode.HTML
         )
 
+@breadcrumb
 async def configure_next_custom_placeholder(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Inicia la configuración del siguiente placeholder personalizado."""
     user = update.effective_user
@@ -1200,6 +1211,7 @@ async def configure_next_custom_placeholder(update: Update, context: ContextType
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
 
+@breadcrumb
 async def handle_new_post(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja la creación de un nuevo post"""
     await update.callback_query.edit_message_text(
@@ -1214,6 +1226,7 @@ async def handle_new_post(update: Update, context: ContextTypes.DEFAULT_TYPE):
     from core.states import State, state_manager
     state_manager.set_state(update.effective_user.id, State.CREATING_POST)
 
+@breadcrumb
 async def handle_list_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja la visualización de posts existentes"""
     # Aquí iría el código para cargar los posts desde la base de datos o archivo JSON
@@ -1241,6 +1254,7 @@ async def handle_list_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def handle_categories(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja la gestión de categorías"""
     keyboard = [
@@ -1261,6 +1275,7 @@ async def handle_categories(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def handle_tags(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja la gestión de etiquetas"""
     keyboard = [
@@ -1281,6 +1296,7 @@ async def handle_tags(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def handle_admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Maneja la gestión de usuarios (solo admin)"""
     keyboard = [
@@ -1301,6 +1317,7 @@ async def handle_admin_users(update: Update, context: ContextTypes.DEFAULT_TYPE)
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def handle_admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Muestra estadísticas (solo admin)"""
     from models.user import User
@@ -1320,6 +1337,7 @@ async def handle_admin_stats(update: Update, context: ContextTypes.DEFAULT_TYPE)
         parse_mode=ParseMode.HTML
     )
 
+@breadcrumb
 async def whoami_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para el comando /whoami que muestra información del usuario."""
     user = update.effective_user
@@ -1349,6 +1367,7 @@ async def whoami_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Fecha registro: {db_user.created_at if hasattr(db_user, 'created_at') else 'N/A'}"
     )
 
+@breadcrumb
 async def handle_custom_placeholder_configuration(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Manejador para procesar la configuración de placeholders personalizados."""
     user = update.effective_user
